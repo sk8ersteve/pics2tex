@@ -16,9 +16,6 @@ def sub(s):
     # s is a latex string
     return '_{' + getChar(s) + '}'
 
-def frac(a, b):
-    return '\frac{' + getChar(a) + '}{' + getChar(b) + '}'
-
 def generalDirection(a, b):
     # a, b bounding boxes
     # use getDirection (returns radians)
@@ -45,6 +42,23 @@ def approximatelyEqual(sa, sb):
     frac = float(sa) / float(sb)
     return frac < 1.25 and frac > 0.8
 
+def preprocessSigma(l):
+    newChars=[]
+    foundSigma = None
+    for a in l:
+        if (getChar(a) == """\sigma"""):
+            foundSigma = a
+            newChars = filter(neigbors, lambda b: a.dist(b)<80)
+            break
+    if (foundSigma != None):
+        aboveSigma = find(lambda b: a.getDirection(b)<135 and  a.getDirection(b)>270, newChars)
+        belowSigma = find(lambda b: a.getDirection(b)<315 and  a.getDirection(b)>270, newChars)
+        for each in aboveSigma:
+            l.remove(each)
+        for each in belowSigma:
+            l.remove(belowSigma)
+        foundSigma.char = """\sigma""" + '^{' + latexObjToString(getLatex(aboveSigma)) + '}' + '_{' + latexObjToString(getLatex(belowSigma)) + '}'
+    return l
 # returns latex text and a list of what is left
 def getLatex(l, prefix=''):
     # l is a list of bounding boxes
@@ -81,7 +95,6 @@ def getLatex(l, prefix=''):
         allAbove =  filter(currentScope, lambda b: (b.getCenter()[1])>aboveThresh )
         allBelow =  filter(currentScope, lambda b: (b.getCenter()[1])<belowThresh )
 
-
         texAbove = getLatex(allAbove)
         texBelow = getLatex(allBelow)
         texRight = getLatex(remainingScope)
@@ -95,4 +108,10 @@ def latexObjToString(someLatexObj):
     s+='_{' + latexObjToString(someLatexObj.below) + '}'
     s+=nextAtLevel(latexObjToString(someLatexObj.nextAtLevel))
     return s
+
+def processBBs(bbCharList):
+    ls = preprocessSigma(bbCharList)
+    return latexObjToString(getLatex(ls))
+
+
 
