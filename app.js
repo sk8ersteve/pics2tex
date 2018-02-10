@@ -42,7 +42,7 @@ router.post('/image', function (req, res) {
     console.log(oldpath);
     blobSvc.createBlockBlobFromLocalFile('pics', name.toString(), oldpath, function (error, result, response) {
       if (!error) {
-        var process = spawn('python3', [__dirname + '/test.py', oldpath]);
+        var process = spawn('python', [__dirname + '/test.py', oldpath]);
         process.stdout.on('data', function (data){
           res.write(data);
           res.end();
