@@ -11,11 +11,7 @@ var users = require('./routes/users');
 var app = express();
 var router = express.Router();
 var formidable = require('formidable');
-var azure = require('azure-storage');
-
-name = "rawmathpics";
-key = "bMbE1GoaW/YWZghXo7i+y/HBlqFdVuIgK35gm5LMB1OxCmokkhoQ2CFkIrlVDOxwjmnLdNA2NOWVtHo82WZ7JQ==";
-var blobSvc = azure.createBlobService(name, key);
+var fs = require('fs');
 
 var spawn = require('child_process').spawn;
 
@@ -38,18 +34,18 @@ router.post('/image', function (req, res) {
   var form = new formidable.IncomingForm();
   form.parse(req, function (err, fields, files) {
     var oldpath = files.pic.path;
-    name = Date.now();
+    var newpath = __dirname + '/' + files.pic.name;
+    console.log(newpath);
     console.log(oldpath);
-    blobSvc.createBlockBlobFromLocalFile('pics', name.toString(), oldpath, function (error, result, response) {
-      if (!error) {
-        var process = spawn('python', [__dirname + '/test.py']);
-        process.stdout.on('data', function (data){
-          res.write(data);
-          res.end();
-        });
-      }
+    fs.rename(oldpath, newpath, function(err){
+      if (err) throw err;
+      var process = spawn('python', [__dirname + '/test.py']);
+      process.stdout.on('data', function (data){
+        res.write(data);
+        res.end();
+      });
+      res.write('File uploaded and move\n');
     });
-    res.write('File uploaded and move\n');
   });
 });
 
