@@ -38,7 +38,8 @@ router.post('/image', function (req, res) {
   var form = new formidable.IncomingForm();
   form.parse(req, function (err, fields, files) {
     var oldpath = files.pic.path;
-    var newpath = __dirname + '/' + files.pic.name;
+    name = Date.now();
+    var newpath = __dirname + '/' + name;
     fs.rename(oldpath, newpath, function(err){
       if (err) throw err;
       var process = spawn('python', [__dirname + '/test.py']);
@@ -49,7 +50,6 @@ router.post('/image', function (req, res) {
       res.write('File uploaded and move\n');
     });
 
-    name = Date.now();
     console.log(oldpath);
     blobSvc.createBlockBlobFromLocalFile('pics', name.toString(), oldpath, function (error, result, response) {});
   });
