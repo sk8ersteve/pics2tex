@@ -39,19 +39,17 @@ router.post('/image', function (req, res) {
   form.parse(req, function (err, fields, files) {
     var oldpath = files.pic.path;
     name = Date.now();
-    var newpath = __dirname + '/' + name;
-    fs.rename(oldpath, newpath, function(err){
-      if (err) throw err;
-      var process = spawn('python', [__dirname + '/test.py']);
-      process.stdout.on('data', function (data){
-        res.write(data);
-        res.end();
-      });
-      res.write('File uploaded and move\n');
-    });
-
     console.log(oldpath);
-    blobSvc.createBlockBlobFromLocalFile('pics', name.toString(), oldpath, function (error, result, response) {});
+    blobSvc.createBlockBlobFromLocalFile('pics', name.toString(), oldpath, function (error, result, response) {
+      if (!error) {
+        var process = spawn('python', [__dirname + '/test.py', oldpath]);
+        process.stdout.on('data', function (data){
+          res.write(data);
+          res.end();
+        });
+      }
+    });
+    res.write('File uploaded and move\n');
   });
 });
 
