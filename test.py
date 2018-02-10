@@ -1,6 +1,6 @@
 import sys
 import cv2
-#import numpy as np
+import numpy as np
 print (sys.version)
 #print (sys.argv[1])
 #F = open(sys.argv[1], 'r')
