@@ -46,6 +46,7 @@ router.post('/image', function (req, res) {
       });
       res.write('File uploaded and move\n');
     });*/
+    res.write(newpath + ' ' + oldpath);
     res.end();
   });
 });
