@@ -11,7 +11,9 @@ var users = require('./routes/users');
 var app = express();
 var router = express.Router();
 var formidable = require('formidable');
-var fs = require('fs');
+var azure = require('azure-storage');
+
+//var blobSvc = azure.createBlobService();
 
 var spawn = require('child_process').spawn;
 
@@ -37,17 +39,15 @@ router.post('/image', function (req, res) {
     var newpath = __dirname + '/' + files.pic.name;
     console.log(newpath);
     console.log(oldpath);
-    /*fs.rename(oldpath, newpath, function(err){
-      if (err) throw err;
+    //fs.rename(oldpath, newpath, function(err){
+      //if (err) throw err;
       var process = spawn('python', [__dirname + '/test.py']);
       process.stdout.on('data', function (data){
         res.write(data);
         res.end();
       });
       res.write('File uploaded and move\n');
-    });*/
-    res.write("<html><body><img src='"+oldpath+"'></body></html>");
-    res.end();
+    //});
   });
 });
 
@@ -62,7 +62,7 @@ app.use(function(req, res, next) {
 
 // error handler
 app.use(function(err, req, res, next) {
-  // set locals, only providing error in development
+ // set locals, only providing error in development
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};
 
