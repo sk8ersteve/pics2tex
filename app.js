@@ -4,6 +4,7 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
+var fs = require('fs');
 
 var index = require('./routes/index');
 var users = require('./routes/users');
@@ -21,7 +22,7 @@ var spawn = require('child_process').spawn;
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'jade');
+app.set('view engine', 'pug');
 
 // uncomment after placing your favicon in /public
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
@@ -38,9 +39,19 @@ router.post('/image', function (req, res) {
   var form = new formidable.IncomingForm();
   form.parse(req, function (err, fields, files) {
     var oldpath = files.pic.path;
-    name = Date.now();
+    var newpath = __dirname + '/target.png';
+
     console.log(oldpath);
-    blobSvc.createBlockBlobFromLocalFile('pics', name.toString(), oldpath, function (error, result, response) {
+    fs.rename(oldpath, newpath, function () {
+      var process = spawn('python', [__dirname + '/THacks18/main.py']);
+      process.stdout.on('data', function (data){
+        var obj = new Object();
+        obj.latex = data;
+        res.render('result', obj);
+      });
+    })
+
+    /*blobSvc.createBlockBlobFromLocalFile('pics', name.toString(), oldpath, function (error, result, response) {
       if (!error) {
         var process = spawn('python', [__dirname + '/test.py', oldpath]);
         process.stdout.on('data', function (data){
@@ -48,8 +59,8 @@ router.post('/image', function (req, res) {
           res.end();
         });
       }
-    });
-    res.write('File uploaded and move\n');
+    });*/
+    //res.send("{'text':'File uploaded and move\n'");
   });
 });
 
