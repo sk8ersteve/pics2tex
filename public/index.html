@@ -4,7 +4,7 @@
   </head>
   <body>
     <h1>Upload a picture to have turned into Latex</h1>
-    <form action="/action_page.php">
+    <form method="POST" action="/process/image" enctype="multipart/form-data">
       <input type="file" name="pic" accept="image/*">
       <input type="submit">
     </form>

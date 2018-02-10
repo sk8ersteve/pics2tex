@@ -9,6 +9,11 @@ var index = require('./routes/index');
 var users = require('./routes/users');
 
 var app = express();
+var router = express.Router();
+var formidable = require('formidable');
+var fs = require('fs');
+
+var spawn = require('child_process').spawn;
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -24,6 +29,27 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', index);
 app.use('/users', users);
+
+router.post('/image', function (req, res) {
+  var form = new formidable.IncomingForm();
+  form.parse(req, function (err, fields, files) {
+    var oldpath = files.pic.path;
+    var newpath = __dirname + '/' + files.pic.name;
+    console.log(newpath);
+    console.log(oldpath);
+    fs.rename(oldpath, newpath, function(err){
+      if (err) throw err;
+      var process = spawn('python', [__dirname + '/test.py']);
+      process.stdout.on('data', function (data){
+        res.write(data);
+        res.end();
+      });
+      res.write('File uploaded and move\n');
+    });
+  });
+});
+
+app.use('/process', router);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
