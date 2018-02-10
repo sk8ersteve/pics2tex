@@ -1,0 +1,13 @@
+import bb
+
+def getChar(x):
+    return x.char
+
+# returns latex text and a list of what is left
+def getLatex(l):
+    charsOutput []
+    sortedRow = sorted(neigbors, lambda b: a.minX)
+
+    for i, each in enumerate(l):
+        charsOutput.append(getChar(x))
+    return charsOutput
