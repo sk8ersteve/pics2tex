@@ -37,7 +37,7 @@ router.post('/image', function (req, res) {
     var newpath = __dirname + '/' + files.pic.name;
     console.log(newpath);
     console.log(oldpath);
-    fs.rename(oldpath, newpath, function(err){
+    /*fs.rename(oldpath, newpath, function(err){
       if (err) throw err;
       var process = spawn('python', [__dirname + '/test.py']);
       process.stdout.on('data', function (data){
@@ -45,7 +45,8 @@ router.post('/image', function (req, res) {
         res.end();
       });
       res.write('File uploaded and move\n');
-    });
+    });*/
+    res.end();
   });
 });
 
