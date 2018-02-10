@@ -64,6 +64,18 @@ router.post('/image', function (req, res) {
   });
 });
 
+router.post('/image2', function (req, res) {
+  var form = new formidable.IncomingForm();
+  form.parse(req, function (err, fields, files) {
+    var oldpath = files.pic.path;
+    var newpath = __dirname + '/target.png';
+    var obj = new Object();
+    obj.latex = "X^{2}+5n+2";
+
+    res.render('result', );
+
+  });
+});
 app.use('/process', router);
 
 // catch 404 and forward to error handler
