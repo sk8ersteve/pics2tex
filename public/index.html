@@ -1,13 +1,39 @@
 <html>
   <head>
     <title>Pics2Tex | Turn pictures into Latex</title>
+    <link rel="stylesheet" href="stylesheets/bootstrap.min.css">
     <link rel="stylesheet" href="stylesheets/style.css">
+
+    <script src="javascripts/bootstrap.min.js"></script>
+    <script src="javascripts/jquery-3.3.1.min.js"></script>
+    <script src="javascripts/uploadbutton.js"></script>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
   </head>
   <body>
-    <h1>Upload a picture to have turned into Latex</h1>
-    <form method="POST" action="/process/image" enctype="multipart/form-data">
+    <center><h1>Pics 2 Tex</h1></center>
+    <!--form method="POST" action="/process/image" enctype="multipart/form-data">
       <input type="file" name="pic" accept="image/*">
       <input type="submit">
-    </form>
+    </form-->
+    <div class="container">
+      <div class="col-md-5">
+
+        <label>Upload Image</label>
+        <img src="images/placeholder.png" id="img">
+        <form method="POST" enctype="multipart/form-data">
+          <input type="file" name="pic" id="pic" accept="image/*">
+          <!--input type="text" class="form-control" readonly-->
+        </form>
+      
+      </div>
+
+    </div>
+    <div class='col-md-2'>
+      
+    </div>
+    <div class="col-md-5">
+      <!--img id='img-upload'/-->
+    </div>
   </body>
 </html>
