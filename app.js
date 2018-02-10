@@ -72,7 +72,7 @@ router.post('/image2', function (req, res) {
     var obj = new Object();
     obj.latex = "X^{2}+5n+2";
 
-    res.render('result', );
+    res.render('result', obj);
 
   });
 });
